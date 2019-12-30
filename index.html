@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Okupansi Halte Transjakarta</title>
+  <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+  <script src='https://api.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+  <script src='https://code.jquery.com/jquery-1.10.2.js'></script>
+  <script type="text/javascript" src="https://public.tableau.com/javascripts/api/tableau-2.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, Sans-serif;
+    }
+    h1 {
+    font-size: 20px;
+    line-height: 30px;
+    }
+    h2 {
+      font-size: 16px;
+      line-height: 20px;
+      margin-left: 5px;
+      margin-bottom: 4px;
+      margin-top: 0px;
+      text-align: left;
+      }
+    h3 {
+      font-size: 13px;
+      line-height: 10px;
+      margin-bottom: 8px;
+      margin-top: 0px;
+      text-align: center;
+    }
+    h4 {
+      font-size: 13px;
+      line-height: 10px;
+      margin-bottom: 8px;
+      margin-top: 20px;
+      text-align: center;
+    }
+  .left {
+      float: left;
+      width: 40%;
+  }
+  .middle {
+      float: center;
+      margin: 5px;
+  }
+  .right {
+      float: left;
+      width: 30%;
+  }
+    #map {
+      position: absolute;
+      width: 540px;
+      height: 410px;
+      left: 440px;
+      top: 85px;
+    }
+
+    #container {
+      position: absolute
+      background-color: black;
+    }
+    #tableauViz {
+        background-color: black;
+        width: 1366px;
+        height: 750px;
+    }
+
+    /* popup */
+    .mapboxgl-popup {
+      max-width: 150px;
+      max-height: 100px;
+      opacity: 0.9;
+      }
+    .mapboxgl-popup-content {
+      text-align: left;
+      font-family: 'Open Sans', sans-serif;
+      background-color: #202020;
+      color: #fff;
+    }
+    .mapboxgl-popup-anchor-bottom-left .mapboxgl-popup-tip,
+    .mapboxgl-popup-anchor-bottom-right .mapboxgl-popup-tip,
+    .mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip {
+        border-top-color: #202020;
+    }
+    .mapboxgl-popup-anchor-top-left .mapboxgl-popup-tip,
+    .mapboxgl-popup-anchor-top-right .mapboxgl-popup-tip,
+    .mapboxgl-popup-anchor-top .mapboxgl-popup-tip {
+        border-bottom-color: #202020;
+    }
+    .mapboxgl-popup-anchor-right .mapboxgl-popup-tip {
+        border-left-color: #202020;
+    }
+    .mapboxgl-popup-anchor-left .mapboxgl-popup-tip {
+        border-right-color: #202020;
+    }
+    .map-overlay {width: 145px; top: 5px; padding: 5px; z-index: 1;}
+    .map-overlay .map-overlay-inner {
+        background: rgba(10, 10, 10, 10);
+        color: #ccc;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+        border-radius: 3px;
+        padding: 5px;
+        margin-bottom: 5px;
+        z-index: 1;
+    }
+      .left-map {
+          position: relative;
+          bottom: 5px;
+          float: left;
+      }
+      .left-map-top {
+          position: absolute;
+          top: 42px;
+          left: 830px;
+          float: left;
+      }
+      .map-overlay-judul {
+          width: 540px;
+          top: 0px;
+          padding: 5px;
+          z-index: 1;
+      }
+      .map-overlay-judul .map-overlay-inner-judul {
+          background: rgba(10, 10, 10, 10);
+          color: #ccc;
+          box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+          border-radius: 3px;
+          padding: 12px;
+          margin-bottom: 10px;
+          z-index: 1;
+      }
+        .left-map-judul {
+            position: relative;
+            bottom: 5px;
+            float: left;
+        }
+        .left-map-top-judul {
+            position: absolute;
+            top: 35px;
+            left: 435px;
+            float: left;
+        }
+        .map-overlay-oj {
+            width: 200px;
+            top: 5px;
+            padding: 5px;
+            z-index: 1;
+        }
+        .map-overlay-oj .map-overlay-inner-oj {
+            background: rgba(10, 10, 10, 10);
+            color: #ccc;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+            border-radius: 3px;
+            padding: 5px;
+            margin-bottom: 10px;
+            z-index: 1;
+        }
+          .left-map-oj {
+              position: relative;
+              bottom: 5px;
+              float: left;
+          }
+          .left-map-top-oj {
+              position: absolute;
+              top: 42px;
+              left: 560px;
+              float: left;
+          }
+          .map-overlay-s {
+              width: 150px;
+              top: 0px;
+              padding: 5px;
+              z-index: 10;
+          }
+          .map-overlay-s .map-overlay-inner-s {
+              background: rgba(10, 10, 10, 10);
+              color: #ccc;
+              box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+              border-radius: 3px;
+              padding: 0px;
+              margin-bottom: 10px;
+              z-index: 10;
+          }
+            .left-map-s {
+                position: relative;
+                bottom: 5px;
+                float: left;
+            }
+            .left-map-top-s {
+                position: absolute;
+                top: 20px;
+                left: 670px;
+                float: left;
+            }
+            .session {
+          margin-bottom: 20px;
+        }
+        .row {
+          height: 12px;
+          width: 100%;
+        }
+        .map-overlay-bt {
+            width: 20px;
+            top: 0px;
+            padding: 5px;
+            z-index: 10;
+        }
+        .map-overlay-bt .map-overlay-inner-bt {
+            background: rgba(10, 10, 10, 10);
+            color: #ccc;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+            border-radius: 3px;
+            padding: 0px;
+            margin-bottom: 10px;
+            z-index: 10;
+        }
+          .left-map-bt {
+              position: relative;
+              bottom: 5px;
+              float: left;
+          }
+          .left-map-top-bt {
+              position: absolute;
+              top: 92px;
+              left: 7px;
+              float: left;
+          }
+          .map-overlay-leg {
+              width: 542px;
+              top: 5px;
+              padding: 5px;
+              z-index: 10;
+          }
+          .map-overlay-leg .map-overlay-inner-leg {
+              background: rgba(10, 10, 10, 10);
+              color: #ccc;
+              box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10);
+              border-radius: 3px;
+              padding: 5px;
+              margin-bottom: 10px;
+              z-index: 10;
+              height: 50px;
+              opacity: 0.9
+          }
+            .left-map-leg {
+                position: relative;
+                bottom: 5px;
+                float: left;
+            }
+            .left-map-top-leg {
+                position: absolute;
+                top: 490px;
+                left:433px;
+                float: left;
+            }
+          .btn-group button {
+        background-color: black; /* Green background */
+        border: 1px solid grey; /* Green border */
+        color: white; /* White text */
+        padding: 0; /* Some padding */
+        cursor: pointer; /* Pointer/hand icon */
+        width: 100%;
+        height: 70px; /* Set a width if needed */
+        display: block; /* Make the buttons appear below each other */
+        margin-bottom: 23px;
+        }
+        .btn-group button:not(:last-child) {
+          border-bottom: none; /* Prevent double borders */
+        }
+        /* Add a background color on hover */
+        .btn-group button:hover {
+          background-color: #6488b4;
+        }
+
+        .colors {
+        background: linear-gradient(to right, #210029, #433a83, #30668d, #20928f, #35b677, #8fd742, #fde726);
+        margin-bottom: 0px;
+      }
+
+      .label {
+        width: 13%;
+        display: inline-block;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 0;
+      }
+
+  </style>
+
+</head>
+<body>
+  <div class="container">
+    <div class='left-map-top-leg map-overlay-leg'>
+        <div class='map-overlay-inner-leg'>
+          <div class='session'>
+          <h3>Jumlah penduduk per 100m<sup>2</sup></h3>
+            <div class='row colors'>
+              </div>
+              <div class='row labels'>
+                <div class='label'>0</div>
+                <div class='label'>23.5</div>
+                <div class='label'>56.6</div>
+                <div class='label'>89.5</div>
+                <div class='label'>122</div>
+                <div class='label'>154.5</div>
+                <div class='label'>187.5</div>
+          </div>
+          </div>
+          </div>
+          </div>
+          <div id='map'></div>
+        <div class='left-map-top-judul map-overlay-judul'>
+            <div class='map-overlay-inner-judul'>
+              <label> <h2>Atur Filter</h2> </label>
+            </div>
+          </div>
+          <div class='left-map-top-oj map-overlay-oj'>
+              <div class='map-overlay-inner-oj'>
+                <select style = "border-radius: 3px" id = "filters" onchange = "filterSingleValue(this)">
+                  <option>Pilih Hari</option>
+                  <option value="Senin">Senin</option>
+                  <option value="Selasa">Selasa</option>
+                  <option value="Rabu">Rabu</option>
+                  <option value="Kamis">Kamis</option>
+                  <option value="Jumat">Jumat</option>
+                  <option value="Sabtu">Sabtu</option>
+                  <option value="Minggu">Minggu</option>
+                  </select>
+                </div>
+              </div>
+              <div class='left-map-top-s map-overlay-s'>
+                  <div class='map-overlay-inner-s'>
+                  <div class='session' id='sliderbar'>
+                    <h4>Jam: <label id='active-hour'>12</label></h4>
+                    <input id='slider' class='row' type='range' min='5' max='23' step='1' value='12' />
+                  </div>
+              </div>
+            </div>
+        <div class='left-map-top map-overlay'>
+            <div class='map-overlay-inner'>
+                          <button id = "clearFilter" onclick="clearFilter()" style = "border-radius: 2px">Hapus Semua Filter</button>
+                        </div>
+                      </div>
+                      <div class='left-map-top-bt map-overlay-bt'>
+                          <div class='map-overlay-inner-bt''>
+                            <div class='btn-group'>
+                            <div class = 'row'>
+                              <button id = "ft1" onclick="Koridor1()">1</button>
+                              <button id = "ft2" onclick="Koridor2()">2</button>
+                              <button id = "ft3" onclick="Koridor3()">3</button>
+                              <button id = "ft4" onclick="Koridor4()">4</button>
+                              <button id = "ft5" onclick="Koridor5()">5</button>
+                              <button id = "ft6" onclick="Koridor6()">6</button>
+                              <button id = "ft7" onclick="Koridor7()">7</button>
+                              </div>
+                            </div>
+                            </div>
+                          </div>
+      <div id="tableauViz"></div>
+</div>
+
+<script>
+
+  var options = {
+    // Show the tabs
+    width: "100%", //width: placeholderDiv.offsetWidth,
+    height: "100%",
+    hideTabs: true,
+    // Aync so supply callback for when viz is fully rendered
+    onFirstInteractive: function() {
+      workbook = viz.getWorkbook();
+    }
+  }
+var url = "https://public.tableau.com/views/viz1_15771214592430/asd";
+// Create a View
+var placeholderDiv = document.getElementById("tableauViz");
+viz = new tableau.Viz(placeholderDiv, url, options);
+
+function filterSingleValue(filters) {
+    var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+    workbook.activateSheetAsync("asd")
+    .then(function (sheet) {
+      dashboard = sheet;
+      korSheet = dashboard.getWorksheets().get("1Koridor");
+      halSheet = dashboard.getWorksheets().get("1Halte");
+      hourSheet = dashboard.getWorksheets().get("1hourly");
+      korSheet.applyFilterAsync("Hari", filters.value, tableauSoftware.FilterUpdateType.REPLACE);
+      halSheet.applyFilterAsync("Hari", filters.value, tableauSoftware.FilterUpdateType.REPLACE);
+      return hourSheet.applyFilterAsync("Hari", filters.value, tableauSoftware.FilterUpdateType.REPLACE);
+      })
+  }
+  function clearFilter() {
+      var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+      workbook.activateSheetAsync("asd")
+      .then(function (sheet) {
+        dashboard = sheet;
+        korSheet = dashboard.getWorksheets().get("1Koridor");
+        halSheet = dashboard.getWorksheets().get("1Halte");
+        hourSheet = dashboard.getWorksheets().get("1hourly");
+        korSheet.clearFilterAsync("Koridor");
+        korSheet.clearFilterAsync("Hari");
+        halSheet.clearFilterAsync("Hari");
+        hourSheet.clearFilterAsync("Koridor");
+        return hourSheet.clearFilterAsync("Hari");
+        })
+    }
+  function Koridor1() {
+      var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+      workbook.activateSheetAsync("asd")
+      .then(function (sheet) {
+        dashboard = sheet;
+        korSheet = dashboard.getWorksheets().get("1Koridor");
+        halSheet = dashboard.getWorksheets().get("1Halte");
+        hourSheet = dashboard.getWorksheets().get("1hourly");
+        korSheet.applyFilterAsync("Koridor", "1", tableauSoftware.FilterUpdateType.REPLACE);
+        halSheet.applyFilterAsync("Koridor", "1", tableauSoftware.FilterUpdateType.REPLACE);
+        return hourSheet.applyFilterAsync("Koridor", "1", tableauSoftware.FilterUpdateType.REPLACE);
+        })
+    }
+    function Koridor2() {
+        var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+        workbook.activateSheetAsync("asd")
+        .then(function (sheet) {
+          dashboard = sheet;
+          korSheet = dashboard.getWorksheets().get("1Koridor");
+          halSheet = dashboard.getWorksheets().get("1Halte");
+          hourSheet = dashboard.getWorksheets().get("1hourly");
+          korSheet.applyFilterAsync("Koridor", "2", tableauSoftware.FilterUpdateType.REPLACE);
+          halSheet.applyFilterAsync("Koridor", "2", tableauSoftware.FilterUpdateType.REPLACE);
+          return hourSheet.applyFilterAsync("Koridor", "2", tableauSoftware.FilterUpdateType.REPLACE);
+          })
+      }
+      function Koridor3() {
+          var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+          workbook.activateSheetAsync("asd")
+          .then(function (sheet) {
+            dashboard = sheet;
+            korSheet = dashboard.getWorksheets().get("1Koridor");
+            halSheet = dashboard.getWorksheets().get("1Halte");
+            hourSheet = dashboard.getWorksheets().get("1hourly");
+            korSheet.applyFilterAsync("Koridor", "3", tableauSoftware.FilterUpdateType.REPLACE);
+            halSheet.applyFilterAsync("Koridor", "3", tableauSoftware.FilterUpdateType.REPLACE);
+            return hourSheet.applyFilterAsync("Koridor", "3", tableauSoftware.FilterUpdateType.REPLACE);
+            })
+        }
+        function Koridor4() {
+            var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+            workbook.activateSheetAsync("asd")
+            .then(function (sheet) {
+              dashboard = sheet;
+              korSheet = dashboard.getWorksheets().get("1Koridor");
+              halSheet = dashboard.getWorksheets().get("1Halte");
+              hourSheet = dashboard.getWorksheets().get("1hourly");
+              korSheet.applyFilterAsync("Koridor", "4", tableauSoftware.FilterUpdateType.REPLACE);
+              halSheet.applyFilterAsync("Koridor", "4", tableauSoftware.FilterUpdateType.REPLACE);
+              return hourSheet.applyFilterAsync("Koridor", "4", tableauSoftware.FilterUpdateType.REPLACE);
+              })
+          }
+          function Koridor5() {
+              var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+              workbook.activateSheetAsync("asd")
+              .then(function (sheet) {
+                dashboard = sheet;
+                korSheet = dashboard.getWorksheets().get("1Koridor");
+                halSheet = dashboard.getWorksheets().get("1Halte");
+                hourSheet = dashboard.getWorksheets().get("1hourly");
+                korSheet.applyFilterAsync("Koridor", "5", tableauSoftware.FilterUpdateType.REPLACE);
+                halSheet.applyFilterAsync("Koridor", "5", tableauSoftware.FilterUpdateType.REPLACE);
+                return hourSheet.applyFilterAsync("Koridor", "5", tableauSoftware.FilterUpdateType.REPLACE);
+                })
+            }
+            function Koridor6() {
+                var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+                workbook.activateSheetAsync("asd")
+                .then(function (sheet) {
+                  dashboard = sheet;
+                  korSheet = dashboard.getWorksheets().get("1Koridor");
+                  halSheet = dashboard.getWorksheets().get("1Halte");
+                  hourSheet = dashboard.getWorksheets().get("1hourly");
+                  korSheet.applyFilterAsync("Koridor", "6", tableauSoftware.FilterUpdateType.REPLACE);
+                  halSheet.applyFilterAsync("Koridor", "6", tableauSoftware.FilterUpdateType.REPLACE);
+                  return hourSheet.applyFilterAsync("Koridor", "6", tableauSoftware.FilterUpdateType.REPLACE);
+                  })
+              }
+              function Koridor7() {
+                  var dashboard, activeSheet, korSheet, halSheet, hourSheet;
+                  workbook.activateSheetAsync("asd")
+                  .then(function (sheet) {
+                    dashboard = sheet;
+                    korSheet = dashboard.getWorksheets().get("1Koridor");
+                    halSheet = dashboard.getWorksheets().get("1Halte");
+                    hourSheet = dashboard.getWorksheets().get("1hourly");
+                    korSheet.applyFilterAsync("Koridor", "7", tableauSoftware.FilterUpdateType.REPLACE);
+                    halSheet.applyFilterAsync("Koridor", "7", tableauSoftware.FilterUpdateType.REPLACE);
+                    return hourSheet.applyFilterAsync("Koridor", "7", tableauSoftware.FilterUpdateType.REPLACE);
+                    })
+                }
+
+    document.getElementById("ft1").addEventListener("click", function() {
+        map.flyTo({
+        center: [106.797,-6.230],
+        zoom : 14.26,
+        pitch: 80,
+        bearing: -3,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+      });
+    document.getElementById("ft2").addEventListener("click", function() {
+        map.flyTo({
+        center: [106.894,-6.178],
+        zoom : 13.44,
+        pitch: 80,
+        bearing: -93,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+      });
+      document.getElementById("ft3").addEventListener("click", function() {
+        map.flyTo({
+          center: [106.719,-6.158],
+          zoom : 14.52,
+          pitch: 80,
+          bearing: 90,
+          essential: true // this animation is considered essential with respect to prefers-reduced-motion
+          });
+        });
+      document.getElementById("ft4").addEventListener("click", function() {
+        map.flyTo({
+        center: [106.894,-6.188],
+        zoom : 13.78,
+        pitch: 80,
+        bearing: -94,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+          });
+        });
+      document.getElementById("ft5").addEventListener("click", function() {
+        map.flyTo({
+        center: [106.863,-6.211],
+        zoom : 14.32,
+        pitch: 80,
+        bearing: 7,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+      });
+      document.getElementById("ft6").addEventListener("click", function() {
+        map.flyTo({
+        center: [106.829,-6.294],
+        zoom : 13.33,
+        pitch: 80,
+        bearing: -8,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+      });
+      document.getElementById("ft7").addEventListener("click", function() {
+        map.flyTo({
+        center: [106.867,-6.292],
+        zoom : 13.02,
+        pitch: 80,
+        bearing: -10,
+        essential: true // this animation is considered essential with respect to prefers-reduced-motion
+        });
+      });
+
+  mapboxgl.accessToken = 'pk.eyJ1IjoiYWxpYW5mYXRoaXJhIiwiYSI6ImNqMXpzampjaDAzOW8zOHFsZXRzbzY3dmsifQ.qvd02ikJdvev6aJakEULOQ';
+
+  var bounds = [
+  [106.6877628069917,-6.324589546367753],
+  [106.94407467971423,-6.074828775823416]
+  ];
+  var centerPoint = [106.8170, -6.2223]
+  var map = new mapboxgl.Map({
+    container: 'map', // container id
+    style: 'mapbox://styles/alianfathira/ck30p3vfd14nf1coat9cicz56', // stylesheet location
+    center: centerPoint, // starting position [lng, lat]
+    zoom: 12.07,
+    bearing: 0,
+    pitch: 30,
+    maxBounds: bounds
+    });
+
+    map.on('load', function() {
+
+    var filterHour = ['==', ['number', ['get', 'Jam']], 12];
+    var filterDay = ['!=', ['string', ['get', 'Hari']], 'placeholder'];
+    map.addLayer({
+      id: 'okupansi',
+      type: 'circle',
+      source: {
+        type: 'vector',
+        url: 'mapbox://alianfathira.2go95zco'
+      },
+      'source-layer': 'okupansi-9rs1d6',
+      paint: {
+        'circle-radius': [
+          'interpolate', ['linear'], ['zoom'],
+          11, ['^', ['get', 'Okupansi'], 0.4],
+          17, ['^', ['get', 'Okupansi'], 0.7],
+        ],
+        'circle-color': [
+        'match',
+        ['get', 'Koridor'],
+        1, '#6488b4',
+        2, '#ffad33',
+        3, '#ef706b',
+        4, '#8cc2ca',
+        5, '#56ae89',
+        6, '#c3bd41',
+        7, '#bc7693',
+        '#ccc'
+        ],
+        'circle-opacity': 0.8,
+        'circle-blur': 0.2,
+        'circle-stroke-color': 'black',
+        'circle-stroke-width': 0.4,
+      },
+    filter: ['all', filterHour, filterDay]
+  });
+
+  document.getElementById('slider').addEventListener('input', function(e) {
+  var jam = parseInt(e.target.value);
+  // update the map
+  filterHour = ['==', ['number', ['get', 'Jam']], jam];
+  map.setFilter('okupansi', ['all', filterHour, filterDay]);
+  // update text in the UI
+  document.getElementById('active-hour').innerText = jam;
+  });
+
+  document.getElementById('filters').addEventListener('change', function(e) {
+      var hari = e.target.value;
+      // update the map filter
+      if (hari === 'Senin') {
+        filterDay = ['match', ['get', 'Hari'], 'Senin', true, false];
+      } else if (hari === 'Senin') {
+        filterDay = ['match', ['get', 'Hari'], 'Senin', true, false];
+      } else if (hari === 'Selasa') {
+        filterDay = ['match', ['get', 'Hari'],'Selasa', true, false];
+      } else if (hari === 'Rabu') {
+        filterDay = ['match', ['get', 'Hari'], 'Rabu', true, false];
+      } else if (hari === 'Kamis') {
+        filterDay = ['match', ['get', 'Hari'], 'Kamis', true, false];
+      } else if (hari === 'Jumat') {
+        filterDay = ['match', ['get', 'Hari'], 'Jumat', true, false];
+      } else if (hari === 'Sabtu') {
+        filterDay = ['match', ['get', 'Hari'], 'Sabtu', true, false];
+      } else if (hari === 'Minggu') {
+        filterDay = ['match', ['get', 'Hari'], 'Minggu', true, false];
+      } else {
+        console.log('error');
+      }
+      map.setFilter('okupansi', ['all', filterHour, filterDay]);
+  });
+  //popup
+  map.on('click', 'okupansi', function (e) {
+    new mapboxgl.Popup({ offset: 25 })
+    .setLngLat(e.lngLat)
+    .setHTML('<h3><b>' +
+        e.features[0].properties.Halte + '</b></h3>Okupansi: <b>' +
+        e.features[0].properties.Okupansi + '</b></h3>')
+    .addTo(map);
+  });
+
+  // Change the cursor to a pointer when the mouse is over the states layer.
+    map.on('mouseenter', 'okupansi', function () {
+    map.getCanvas().style.cursor = 'pointer';
+    });
+
+    // Change it back to a pointer when it leaves.
+    map.on('mouseleave', 'okupansi', function () {
+    map.getCanvas().style.cursor = '';
+    });
+});
+
+
+
+</script>
+
+</body>
+</html>
