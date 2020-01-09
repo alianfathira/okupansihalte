@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Analitis Visual Okupansi Halte dan Pergerakan Penumpang Transjakarta</title>
+  <title>Okupansi Halte Transjakarta</title>
   <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
   <script src='https://api.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
   <link href='https://api.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
@@ -403,9 +403,11 @@ function filterSingleValue(filters) {
         korSheet = dashboard.getWorksheets().get("1Koridor");
         halSheet = dashboard.getWorksheets().get("1Halte");
         hourSheet = dashboard.getWorksheets().get("1hourly");
+        daySheet = dashboard.getWorksheets().get("1daily");
         korSheet.clearFilterAsync("Koridor");
         korSheet.clearFilterAsync("Hari");
         halSheet.clearFilterAsync("Hari");
+        daySheet.clearFilterAsync("Koridor");
         hourSheet.clearFilterAsync("Koridor");
         return hourSheet.clearFilterAsync("Hari");
         })
@@ -418,8 +420,10 @@ function filterSingleValue(filters) {
         korSheet = dashboard.getWorksheets().get("1Koridor");
         halSheet = dashboard.getWorksheets().get("1Halte");
         hourSheet = dashboard.getWorksheets().get("1hourly");
+        daySheet = dashboard.getWorksheets().get("1daily");
         korSheet.applyFilterAsync("Koridor", "1", tableauSoftware.FilterUpdateType.REPLACE);
         halSheet.applyFilterAsync("Koridor", "1", tableauSoftware.FilterUpdateType.REPLACE);
+        daySheet.applyFilterAsync("Koridor", "1", tableauSoftware.FilterUpdateType.REPLACE);
         return hourSheet.applyFilterAsync("Koridor", "1", tableauSoftware.FilterUpdateType.REPLACE);
         })
     }
@@ -431,6 +435,8 @@ function filterSingleValue(filters) {
           korSheet = dashboard.getWorksheets().get("1Koridor");
           halSheet = dashboard.getWorksheets().get("1Halte");
           hourSheet = dashboard.getWorksheets().get("1hourly");
+          daySheet = dashboard.getWorksheets().get("1daily");
+          daySheet.applyFilterAsync("Koridor", "2", tableauSoftware.FilterUpdateType.REPLACE);
           korSheet.applyFilterAsync("Koridor", "2", tableauSoftware.FilterUpdateType.REPLACE);
           halSheet.applyFilterAsync("Koridor", "2", tableauSoftware.FilterUpdateType.REPLACE);
           return hourSheet.applyFilterAsync("Koridor", "2", tableauSoftware.FilterUpdateType.REPLACE);
@@ -444,6 +450,8 @@ function filterSingleValue(filters) {
             korSheet = dashboard.getWorksheets().get("1Koridor");
             halSheet = dashboard.getWorksheets().get("1Halte");
             hourSheet = dashboard.getWorksheets().get("1hourly");
+            daySheet = dashboard.getWorksheets().get("1daily");
+            daySheet.applyFilterAsync("Koridor", "3", tableauSoftware.FilterUpdateType.REPLACE);
             korSheet.applyFilterAsync("Koridor", "3", tableauSoftware.FilterUpdateType.REPLACE);
             halSheet.applyFilterAsync("Koridor", "3", tableauSoftware.FilterUpdateType.REPLACE);
             return hourSheet.applyFilterAsync("Koridor", "3", tableauSoftware.FilterUpdateType.REPLACE);
@@ -457,6 +465,8 @@ function filterSingleValue(filters) {
               korSheet = dashboard.getWorksheets().get("1Koridor");
               halSheet = dashboard.getWorksheets().get("1Halte");
               hourSheet = dashboard.getWorksheets().get("1hourly");
+              daySheet = dashboard.getWorksheets().get("1daily");
+              daySheet.applyFilterAsync("Koridor", "4", tableauSoftware.FilterUpdateType.REPLACE);
               korSheet.applyFilterAsync("Koridor", "4", tableauSoftware.FilterUpdateType.REPLACE);
               halSheet.applyFilterAsync("Koridor", "4", tableauSoftware.FilterUpdateType.REPLACE);
               return hourSheet.applyFilterAsync("Koridor", "4", tableauSoftware.FilterUpdateType.REPLACE);
@@ -470,6 +480,8 @@ function filterSingleValue(filters) {
                 korSheet = dashboard.getWorksheets().get("1Koridor");
                 halSheet = dashboard.getWorksheets().get("1Halte");
                 hourSheet = dashboard.getWorksheets().get("1hourly");
+                daySheet = dashboard.getWorksheets().get("1daily");
+                daySheet.applyFilterAsync("Koridor", "5", tableauSoftware.FilterUpdateType.REPLACE);
                 korSheet.applyFilterAsync("Koridor", "5", tableauSoftware.FilterUpdateType.REPLACE);
                 halSheet.applyFilterAsync("Koridor", "5", tableauSoftware.FilterUpdateType.REPLACE);
                 return hourSheet.applyFilterAsync("Koridor", "5", tableauSoftware.FilterUpdateType.REPLACE);
@@ -483,6 +495,8 @@ function filterSingleValue(filters) {
                   korSheet = dashboard.getWorksheets().get("1Koridor");
                   halSheet = dashboard.getWorksheets().get("1Halte");
                   hourSheet = dashboard.getWorksheets().get("1hourly");
+                  daySheet = dashboard.getWorksheets().get("1daily");
+                  daySheet.applyFilterAsync("Koridor", "6", tableauSoftware.FilterUpdateType.REPLACE);
                   korSheet.applyFilterAsync("Koridor", "6", tableauSoftware.FilterUpdateType.REPLACE);
                   halSheet.applyFilterAsync("Koridor", "6", tableauSoftware.FilterUpdateType.REPLACE);
                   return hourSheet.applyFilterAsync("Koridor", "6", tableauSoftware.FilterUpdateType.REPLACE);
@@ -496,6 +510,8 @@ function filterSingleValue(filters) {
                     korSheet = dashboard.getWorksheets().get("1Koridor");
                     halSheet = dashboard.getWorksheets().get("1Halte");
                     hourSheet = dashboard.getWorksheets().get("1hourly");
+                    daySheet = dashboard.getWorksheets().get("1daily");
+                    daySheet.applyFilterAsync("Koridor", "7", tableauSoftware.FilterUpdateType.REPLACE);
                     korSheet.applyFilterAsync("Koridor", "7", tableauSoftware.FilterUpdateType.REPLACE);
                     halSheet.applyFilterAsync("Koridor", "7", tableauSoftware.FilterUpdateType.REPLACE);
                     return hourSheet.applyFilterAsync("Koridor", "7", tableauSoftware.FilterUpdateType.REPLACE);
